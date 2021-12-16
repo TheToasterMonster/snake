@@ -1,0 +1,11 @@
+.board {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(8, 50px);
+    grid-template-rows: repeat(8, 50px);
+}
+.box {
+    background-color: gray;
+    grid-column: auto;
+    grid-row: auto;
+}
