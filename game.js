@@ -1,4 +1,5 @@
 var board = document.getElementById("board");
+const boardSize = 8;
 var snake = [];
 var apple = {
     x: 0,
@@ -7,6 +8,7 @@ var apple = {
 var currentDirection = 0;
 // directions: 0-up, 1-right, 2-down, 3-left
 var score = 0;
+var scoreTracker = document.getElementById("score");
 var gameOver = false;
 var snakeGame = 0;
 
@@ -45,8 +47,8 @@ document.addEventListener('keydown', function(event) {
 });
 
 function createBoard() {
-    for (let i = 0; i < 8; i++) {
-        for (let j = 0; j < 8; j++) {
+    for (let i = 0; i < boardSize; i++) {
+        for (let j = 0; j < boardSize; j++) {
             board.innerHTML += `<div class="box" id="${i} ${j}"></div>`;
         }
     }
@@ -57,6 +59,7 @@ function move() {
     if (snake[0][0] === apple.x && snake[0][1] === apple.y) {
         snake.push(snake[snake.length - 1].slice());
         score++;
+        scoreTracker.innerHTML = `Score: ${score}`;
         generateApple();
     } else {
         // remove color for tail
@@ -72,16 +75,16 @@ function move() {
         } else {
             switch(currentDirection) {
                 case 0:
-                    snake[i][0] = (snake[i][0] + 7) % 8;
+                    snake[i][0] = (snake[i][0] - 1 + boardSize) % boardSize;
                     break;
                 case 1:
-                    snake[i][1] = (snake[i][1] + 1) % 8;
+                    snake[i][1] = (snake[i][1] + 1) % boardSize;
                     break;
                 case 2:
-                    snake[i][0] = (snake[i][0] + 1) % 8;
+                    snake[i][0] = (snake[i][0] + 1) % boardSize;
                     break;
                 default:
-                    snake[i][1] = (snake[i][1] + 7) % 8;
+                    snake[i][1] = (snake[i][1] - 1 + boardSize) % boardSize;
             }
         }
     }
@@ -104,8 +107,8 @@ function move() {
 
 function generateApple() {
     do {
-        apple.x = Math.floor(Math.random() * 8);
-        apple.y = Math.floor(Math.random() * 8);
+        apple.x = Math.floor(Math.random() * boardSize);
+        apple.y = Math.floor(Math.random() * boardSize);
     } while (includesArr(snake, [apple.x, apple.y]));
     let block = document.getElementById(`${apple.x} ${apple.y}`);
     block.style.backgroundColor = "red";
@@ -115,14 +118,16 @@ function game() {
     // reset everything
     board.innerHTML = "";
     snake = []
-    game_over = false;
+    gameOver = false;
+    score = 0;
+    scoreTracker.innerHTML = "Score: 0";
 
     // generate board
     createBoard();
 
     // generate starting block and direction
-    let startX = Math.floor(Math.random() * 8);
-    let startY = Math.floor(Math.random() * 8);
+    let startX = Math.floor(Math.random() * boardSize);
+    let startY = Math.floor(Math.random() * boardSize);
     let startDirection = Math.floor(Math.random() * 4);
 
     // add block to snake and set direction
@@ -134,7 +139,7 @@ function game() {
     // generate first apple
     generateApple();
 
-    // start game
+    // start game, 250ms between rendering each move
     snakeGame = setInterval(move, 250);
 }
 
