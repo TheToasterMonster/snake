@@ -1,5 +1,5 @@
 var board = document.getElementById("board");
-const boardSize = 8;
+const BOARD_SIZE = 8;
 var snake = [];
 var apple = {
     x: 0,
@@ -47,8 +47,8 @@ document.addEventListener('keydown', function(event) {
 });
 
 function createBoard() {
-    for (let i = 0; i < boardSize; i++) {
-        for (let j = 0; j < boardSize; j++) {
+    for (let i = 0; i < BOARD_SIZE; i++) {
+        for (let j = 0; j < BOARD_SIZE; j++) {
             board.innerHTML += `<div class="box" id="${i} ${j}"></div>`;
         }
     }
@@ -75,16 +75,16 @@ function move() {
         } else {
             switch(currentDirection) {
                 case 0:
-                    snake[i][0] = (snake[i][0] - 1 + boardSize) % boardSize;
+                    snake[i][0] = (snake[i][0] - 1 + BOARD_SIZE) % BOARD_SIZE;
                     break;
                 case 1:
-                    snake[i][1] = (snake[i][1] + 1) % boardSize;
+                    snake[i][1] = (snake[i][1] + 1) % BOARD_SIZE;
                     break;
                 case 2:
-                    snake[i][0] = (snake[i][0] + 1) % boardSize;
+                    snake[i][0] = (snake[i][0] + 1) % BOARD_SIZE;
                     break;
                 default:
-                    snake[i][1] = (snake[i][1] - 1 + boardSize) % boardSize;
+                    snake[i][1] = (snake[i][1] - 1 + BOARD_SIZE) % BOARD_SIZE;
             }
         }
     }
@@ -107,8 +107,8 @@ function move() {
 
 function generateApple() {
     do {
-        apple.x = Math.floor(Math.random() * boardSize);
-        apple.y = Math.floor(Math.random() * boardSize);
+        apple.x = Math.floor(Math.random() * BOARD_SIZE);
+        apple.y = Math.floor(Math.random() * BOARD_SIZE);
     } while (includesArr(snake, [apple.x, apple.y]));
     let block = document.getElementById(`${apple.x} ${apple.y}`);
     block.style.backgroundColor = "red";
@@ -126,8 +126,8 @@ function game() {
     createBoard();
 
     // generate starting block and direction
-    let startX = Math.floor(Math.random() * boardSize);
-    let startY = Math.floor(Math.random() * boardSize);
+    let startX = Math.floor(Math.random() * BOARD_SIZE);
+    let startY = Math.floor(Math.random() * BOARD_SIZE);
     let startDirection = Math.floor(Math.random() * 4);
 
     // add block to snake and set direction
