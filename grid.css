@@ -1,8 +1,8 @@
 .board {
     display: grid;
-    gap: 10px;
-    grid-template-columns: repeat(8, 50px);
-    grid-template-rows: repeat(8, 50px);
+    gap: 2px;
+    grid-template-columns: repeat(15, 30px);
+    grid-template-rows: repeat(15, 30px);
 }
 .box {
     background-color: gray;
@@ -14,6 +14,10 @@
     font-size: 30px;
 }
 .score {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+}
+button {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 20px;
 }

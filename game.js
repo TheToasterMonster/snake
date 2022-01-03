@@ -1,5 +1,5 @@
 var board = document.getElementById("board");
-const BOARD_SIZE = 8;
+const BOARD_SIZE = 15;
 var snake = [];
 var apple = {
     x: 0,
@@ -9,8 +9,12 @@ var currentDirection = 0;
 // directions: 0-up, 1-right, 2-down, 3-left
 var score = 0;
 var scoreTracker = document.getElementById("score");
+var highScore = 0;
+var highScoreTracker = document.getElementById("high-score")
 var gameOver = false;
 var snakeGame = 0;
+var firstGame = true;
+var playButton = document.getElementById("button")
 
 function includesArr(arr, target) {
     for (var i of arr) {
@@ -55,6 +59,12 @@ function createBoard() {
 }
 
 function move() {
+    if (gameOver) {
+        clearInterval(snakeGame);
+        updateHighScore();
+        return;
+    }
+
     // check if head hits apple
     if (snake[0][0] === apple.x && snake[0][1] === apple.y) {
         snake.push(snake[snake.length - 1].slice());
@@ -75,16 +85,32 @@ function move() {
         } else {
             switch(currentDirection) {
                 case 0:
-                    snake[i][0] = (snake[i][0] - 1 + BOARD_SIZE) % BOARD_SIZE;
+                    if (snake[i][0] - 1 < 0) {
+                        gameOver = true;
+                        return;
+                    }
+                    snake[i][0]--;
                     break;
                 case 1:
-                    snake[i][1] = (snake[i][1] + 1) % BOARD_SIZE;
+                    if (snake[i][1] + 1 >= BOARD_SIZE) {
+                        gameOver = true;
+                        return;
+                    }
+                    snake[i][1]++;
                     break;
                 case 2:
-                    snake[i][0] = (snake[i][0] + 1) % BOARD_SIZE;
+                    if (snake[i][0] + 1 >= BOARD_SIZE) {
+                        gameOver = true;
+                        return;
+                    }
+                    snake[i][0]++;
                     break;
                 default:
-                    snake[i][1] = (snake[i][1] - 1 + BOARD_SIZE) % BOARD_SIZE;
+                    if (snake[i][1] - 1 < 0) {
+                        gameOver = true;
+                        return;
+                    }
+                    snake[i][1]--;
             }
         }
     }
@@ -98,10 +124,12 @@ function move() {
     // add color for head
     let head = document.getElementById(`${snake[0][0]} ${snake[0][1]}`);
     head.style.backgroundColor = "royalblue";
+}
 
-    console.log(gameOver);
-    if (gameOver) {
-        clearInterval(snakeGame);
+function updateHighScore() {
+    if (score > highScore) {
+        highScore = score;
+        highScoreTracker.innerHTML = `High Score: ${highScore}`;
     }
 }
 
@@ -121,6 +149,9 @@ function game() {
     gameOver = false;
     score = 0;
     scoreTracker.innerHTML = "Score: 0";
+    if (firstGame) {
+        playButton.innerHTML = "Play Again";
+    }
 
     // generate board
     createBoard();
@@ -143,4 +174,4 @@ function game() {
     snakeGame = setInterval(move, 250);
 }
 
-game();
+createBoard();
