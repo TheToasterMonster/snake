@@ -150,8 +150,8 @@ function game() {
     score = 0;
     scoreTracker.innerHTML = "Score: 0";
     if (firstGame) {
-        firstGame = false;
         playButton.innerHTML = "Play Again";
+        firstGame = false;
     }
 
     // generate board
